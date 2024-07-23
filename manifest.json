@@ -1,0 +1,16 @@
+{
+  "manifest_version": 3,
+  "name": "Bahria Tools",
+  "description": "Tools used for Bahria University CMS",
+  "version": "0.0.1",
+  "action": {
+    "default_popup": "popup.html"
+  },
+  "permissions": ["activeTab", "tabs", "storage"],
+  "content_scripts": [
+    {
+      "js": ["content.js"],
+      "matches": ["https://cms.bahria.edu.pk/*"]
+    }
+  ]
+}
