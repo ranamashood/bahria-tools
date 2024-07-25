@@ -4,7 +4,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
   chrome.storage.sync.get(["cgpa"], (storage) => {
     if (storage.cgpa) {
-      resultElem.innerHTML = value;
+      resultElem.innerHTML = storage.cgpa;
     }
   });
 
