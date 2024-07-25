@@ -1,11 +1,17 @@
 document.addEventListener("DOMContentLoaded", () => {
-  const resultElem = document.querySelector(".result");
+  const result = document.querySelector(".result");
+  const resultContent = document.querySelector(".result__content");
+  const resultCloseBtn = document.querySelector(".result__close");
   const getCgpaBtn = document.querySelector("#get-cgpa");
 
   chrome.storage.sync.get(["cgpa"], (storage) => {
     if (storage.cgpa) {
-      resultElem.innerHTML = storage.cgpa;
+      resultContent.innerHTML = storage.cgpa;
     }
+  });
+
+  resultCloseBtn.addEventListener("click", () => {
+    result.classList.remove("result--active");
   });
 
   getCgpaBtn.addEventListener("click", () => {
@@ -14,8 +20,8 @@ document.addEventListener("DOMContentLoaded", () => {
         console.log(response);
 
         chrome.storage.sync.set({ cgpa: response.cgpa }, () => {
-          resultElem.innerHTML = response.cgpa;
-          resultElem.classList.add("result--active");
+          resultContent.innerHTML = response.cgpa;
+          result.classList.add("result--active");
         });
       });
     });

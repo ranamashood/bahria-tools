@@ -1,14 +1,22 @@
-<!DOCTYPE html>
-<html>
 <head>
-  <title></title>
-  <link href="popup.css" rel="stylesheet">
+  <link href="popup.css" rel="stylesheet" />
 </head>
 <body>
   <div class="menu">
     <button class="menu__btn" id="get-cgpa">Get CGPA</button>
+    <button class="menu__btn" id="custom-cgpa">Custom CGPA</button>
   </div>
-  <div class="result"></div>
+  <div class="result">
+    <div class="result__content"></div>
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      viewBox="0 -960 960 960"
+      class="result__close"
+    >
+      <path
+        d="m256-200-56-56 224-224-224-224 56-56 224 224 224-224 56 56-224 224 224 224-56 56-224-224-224 224Z"
+      />
+    </svg>
+  </div>
   <script src="popup.js"></script>
 </body>
-</html>
