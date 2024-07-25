@@ -32,12 +32,16 @@ body {
   justify-content: center;
   align-items: center;
   background-color: white;
-  transform: translateX(-100%);
+  transform: translateY(-100%);
   transition: transform 0.2s ease;
 }
 
 .result--active {
-  transform: translateX(0%);
+  transform: translateY(0%);
+}
+
+.result__content {
+  font-size: 1.5rem;
 }
 
 .result__close {
