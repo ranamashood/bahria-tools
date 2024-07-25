@@ -4,19 +4,22 @@
 
 body {
   padding: 24px;
+  width: 200px;
 }
 
 .menu {
   display: flex;
+  flex-direction: column;
   gap: 20px;
 }
 
 .menu__btn {
   background-color: lightblue;
   border-radius: var(--border-radius);
-  padding: 7px 12px;
+  padding: 10px 0;
   border: none;
   outline: none;
+  cursor: pointer;
 }
 
 .result {
