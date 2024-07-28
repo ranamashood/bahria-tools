@@ -74,12 +74,21 @@ const calculateGpa = (semesterNum) => {
 
 const calculateCgpa = () => {
   const getDistinctCourses = () => {
+    const ignoredCourses = [
+      "Fundamentals of Mathematics - I",
+      "Fundamentals of Mathematics - II",
+    ];
+
     const distinctCourses = {};
 
     semesters.forEach((semester) => {
       semester["courses"].forEach((course) => {
         const title = course.children[2].textContent;
-        distinctCourses[title] = course;
+        const product = course.children[7].textContent;
+
+        if (product !== "N/A" && !ignoredCourses.includes(title)) {
+          distinctCourses[title] = course;
+        }
       });
     });
 
