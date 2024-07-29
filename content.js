@@ -21,19 +21,33 @@ const getSemesters = () => {
 
   rows.forEach((row) => {
     if (row.children[0].tagName === "TD" && row.children.length === 1) {
-      const gpaSpan = document.createElement("span");
-      gpaSpan.innerHTML = row.children[0].childNodes[2].textContent;
-      const parent = row.children[0];
-      parent.insertBefore(gpaSpan, parent.childNodes[2]);
-      parent.removeChild(parent.childNodes[3]);
+      semesters[semesterNum]["oldGpa"] = parseFloat(
+        row.children[0].childNodes[2].textContent,
+      );
+      semesters[semesterNum]["oldCgpa"] = parseFloat(
+        row.children[0].childNodes[4].textContent,
+      );
 
-      const cgpaSpan = document.createElement("span");
-      cgpaSpan.innerHTML = row.children[0].childNodes[4].textContent;
-      parent.insertBefore(cgpaSpan, parent.childNodes[4]);
-      parent.removeChild(parent.childNodes[5]);
+      const tbodys = document.getElementsByTagName("tbody");
+      const tr = document.createElement("tr");
 
-      semesters[semesterNum]["gpa"] = parent.children[1];
-      semesters[semesterNum++]["cgpa"] = parent.children[3];
+      tr.innerHTML = `
+        <td colspan="8" class="text-right">
+          <strong>New GPA: </strong>
+          <span>${semesters[semesterNum]["oldGpa"]}</span>
+          <span class="improved-points">+0</span>
+          <strong>New CGPA: </strong>
+          <span>${semesters[semesterNum]["oldCgpa"]}</span>
+          <span class="improved-points">+0</span>
+        </td>
+      `;
+
+      semesters[semesterNum]["newGpa"] = tr.children[0].children[1];
+      semesters[semesterNum]["increasedGpa"] = tr.children[0].children[2];
+      semesters[semesterNum]["newCgpa"] = tr.children[0].children[4];
+      semesters[semesterNum]["increasedCgpa"] = tr.children[0].children[5];
+
+      tbodys[++semesterNum].appendChild(tr);
     } else if (row.children[0].tagName === "TD") {
       row.setAttribute("data-semester", semesterNum);
       semesters[semesterNum] ??= {};
@@ -146,13 +160,28 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
           const newGradePoints = grades[newGrade];
           const product = course.children[7];
           const semesterNum = parseInt(course.getAttribute("data-semester"));
-          const gpa = semesters[semesterNum]["gpa"];
-          const cgpa = semesters[semesters.length - 1]["cgpa"];
+          const gpa = semesters[semesterNum]["newGpa"];
 
           gradePoint.value = newGradePoints;
           product.innerHTML = creditHours * newGradePoints;
-          gpa.innerHTML = ` ${calculateGpa(semesterNum)}, `;
-          cgpa.innerHTML = `${calculateCgpa()} `;
+          gpa.innerHTML = calculateGpa(semesterNum);
+
+          const newGpa = calculateGpa(semesterNum);
+          const increasedGpa = newGpa - semesters[semesterNum]["oldGpa"];
+          semesters[semesterNum]["increasedGpa"].innerHTML = `+${
+            Math.round((increasedGpa + Number.EPSILON) * 100) / 100
+          }`;
+
+          const newCgpa = calculateCgpa();
+          const increasedCgpa =
+            newCgpa - semesters[semesters.length - 1]["oldCgpa"];
+          semesters.forEach((semester) => {
+            const cgpa = semester["newCgpa"];
+            cgpa.innerHTML = `${newCgpa}`;
+            semester["increasedCgpa"].innerHTML = `+${
+              Math.round((increasedCgpa + Number.EPSILON) * 100) / 100
+            }`;
+          });
         });
 
         selectGradePoint.addEventListener("click", (e) => {
@@ -167,13 +196,28 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
           );
           const product = course.children[7];
           const semesterNum = parseInt(course.getAttribute("data-semester"));
-          const gpa = semesters[semesterNum]["gpa"];
-          const cgpa = semesters[semesters.length - 1]["cgpa"];
+          const gpa = semesters[semesterNum]["newGpa"];
 
           grade.value = newGrade;
           product.innerHTML = creditHours * newGradePoints;
-          gpa.innerHTML = ` ${calculateGpa(semesterNum)}, `;
-          cgpa.innerHTML = `${calculateCgpa()} `;
+          gpa.innerHTML = `${calculateGpa(semesterNum)}`;
+
+          const newGpa = calculateGpa(semesterNum);
+          const increasedGpa = newGpa - semesters[semesterNum]["oldGpa"];
+          semesters[semesterNum]["increasedGpa"].innerHTML = `+${
+            Math.round((increasedGpa + Number.EPSILON) * 100) / 100
+          }`;
+
+          const newCgpa = calculateCgpa();
+          const increasedCgpa =
+            newCgpa - semesters[semesters.length - 1]["oldCgpa"];
+          semesters.forEach((semester) => {
+            const cgpa = semester["newCgpa"];
+            cgpa.innerHTML = `${newCgpa}`;
+            semester["increasedCgpa"].innerHTML = `+${
+              Math.round((increasedCgpa + Number.EPSILON) * 100) / 100
+            }`;
+          });
         });
 
         course.children[5].innerHTML = "";

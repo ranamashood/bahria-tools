@@ -9,8 +9,9 @@
   "permissions": ["activeTab", "tabs", "storage"],
   "content_scripts": [
     {
-      "js": ["content.js"],
-      "matches": ["https://cms.bahria.edu.pk/*"]
+      "matches": ["https://cms.bahria.edu.pk/*"],
+      "css": ["content.css"],
+      "js": ["content.js"]
     }
   ]
 }
