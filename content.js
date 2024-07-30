@@ -35,10 +35,10 @@ const getSemesters = () => {
         <td colspan="8" class="text-right">
           <strong>New GPA: </strong>
           <span>${semesters[semesterNum]["oldGpa"]}</span>
-          <span class="improved-points">+0</span>
+          <span class="gpa-improved">+0</span>
           <strong>New CGPA: </strong>
           <span>${semesters[semesterNum]["oldCgpa"]}</span>
-          <span class="improved-points">+0</span>
+          <span class="cgpa-improved">+0</span>
         </td>
       `;
 

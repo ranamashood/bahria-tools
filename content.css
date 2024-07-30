@@ -1,6 +1,12 @@
-.improved-points {
+.gpa-improved,
+.cgpa-improved {
   background-color: green;
   color: white;
   padding: 3px 7px;
   border-radius: 12px;
+  margin-left: 5px;
+}
+
+.gpa-improved {
+  margin-right: 10px;
 }
