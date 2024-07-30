@@ -15,12 +15,16 @@ document.addEventListener("DOMContentLoaded", () => {
     result.classList.remove("result--active");
   });
 
+  const showResult = (content) => {
+    resultContent.innerHTML = content;
+    result.classList.add("result--active");
+  };
+
   getCgpaBtn.addEventListener("click", () => {
     chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => {
       chrome.tabs.sendMessage(tabs[0].id, { action: "getCgpa" }, (response) => {
-        chrome.storage.sync.set({ cgpa: response.cgpa }, () => {
-          resultContent.innerHTML = response.cgpa;
-          result.classList.add("result--active");
+        chrome.storage.sync.set({ cgpa: response.msg }, () => {
+          showResult(response.msg);
         });
       });
     });
@@ -28,7 +32,13 @@ document.addEventListener("DOMContentLoaded", () => {
 
   customCgpaBtn.addEventListener("click", () => {
     chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => {
-      chrome.tabs.sendMessage(tabs[0].id, { action: "customCgpa" });
+      chrome.tabs.sendMessage(
+        tabs[0].id,
+        { action: "customCgpa" },
+        (response) => {
+          showResult(response.msg);
+        },
+      );
     });
   });
 });

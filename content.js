@@ -118,8 +118,15 @@ const calculateCgpa = () => {
 const semesters = getSemesters();
 
 chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
-  if (request.action == "getCgpa") {
-    sendResponse({ cgpa: calculateCgpa() });
+  const currentUrl = window.location.href;
+  const examUrl = "https://cms.bahria.edu.pk/Sys/Student/Exams/ExamResult.aspx";
+
+  if (currentUrl !== examUrl) {
+    sendResponse({
+      msg: "Go to <strong>Provisional Result</strong> page first",
+    });
+  } else if (request.action == "getCgpa") {
+    sendResponse({ msg: calculateCgpa() });
   } else if (request.action == "customCgpa") {
     semesters.forEach((semester) => {
       semester["courses"].forEach((course) => {
