@@ -152,7 +152,7 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
           }
         }
 
-        selectGrade.addEventListener("click", (e) => {
+        selectGrade.addEventListener("change", (e) => {
           const course = e.target.parentElement.parentElement;
           const creditHours = parseInt(course.children[4].textContent);
           const gradePoint = course.children[6].children[0];
@@ -184,7 +184,7 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
           });
         });
 
-        selectGradePoint.addEventListener("click", (e) => {
+        selectGradePoint.addEventListener("change", (e) => {
           const course = e.target.parentElement.parentElement;
           const creditHours = parseInt(course.children[4].textContent);
           const grade = course.children[5].children[0];
