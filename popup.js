@@ -5,12 +5,6 @@ document.addEventListener("DOMContentLoaded", () => {
   const getCgpaBtn = document.querySelector("#get-cgpa");
   const customCgpaBtn = document.querySelector("#custom-cgpa");
 
-  chrome.storage.sync.get(["cgpa"], (storage) => {
-    if (storage.cgpa) {
-      resultContent.innerHTML = storage.cgpa;
-    }
-  });
-
   resultCloseBtn.addEventListener("click", () => {
     result.classList.remove("result--active");
   });
@@ -33,9 +27,7 @@ document.addEventListener("DOMContentLoaded", () => {
   getCgpaBtn.addEventListener("click", () => {
     chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => {
       chrome.tabs.sendMessage(tabs[0].id, { action: "getCgpa" }, (response) => {
-        chrome.storage.sync.set({ cgpa: response.msg }, () => {
-          showResult(response.msg);
-        });
+        showResult(response.msg);
       });
     });
   });
