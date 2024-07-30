@@ -184,8 +184,14 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
           }`;
 
           const newCgpa = calculateCgpa();
-          const increasedCgpa =
+          let increasedCgpa =
             newCgpa - semesters[semesters.length - 1]["oldCgpa"];
+
+          if (isNaN(increasedCgpa)) {
+            increasedCgpa =
+              newCgpa - semesters[semesters.length - 2]["oldCgpa"];
+          }
+
           semesters.forEach((semester) => {
             const cgpa = semester["newCgpa"];
             cgpa.innerHTML = `${newCgpa}`;
@@ -220,8 +226,14 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
           }`;
 
           const newCgpa = calculateCgpa();
-          const increasedCgpa =
+          let increasedCgpa =
             newCgpa - semesters[semesters.length - 1]["oldCgpa"];
+
+          if (isNaN(increasedCgpa)) {
+            increasedCgpa =
+              newCgpa - semesters[semesters.length - 2]["oldCgpa"];
+          }
+
           semesters.forEach((semester) => {
             const cgpa = semester["newCgpa"];
             cgpa.innerHTML = `${newCgpa}`;
