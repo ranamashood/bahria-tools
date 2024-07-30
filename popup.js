@@ -20,6 +20,16 @@ document.addEventListener("DOMContentLoaded", () => {
     result.classList.add("result--active");
   };
 
+  chrome.tabs.query({ active: true, lastFocusedWindow: true }, (tabs) => {
+    let url = tabs[0].url;
+
+    if (!url.startsWith("https://cms.bahria.edu.pk")) {
+      showResult("Open <strong>CMS</strong> first");
+      resultCloseBtn.style.display = "none";
+      result.classList.add("result--active");
+    }
+  });
+
   getCgpaBtn.addEventListener("click", () => {
     chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => {
       chrome.tabs.sendMessage(tabs[0].id, { action: "getCgpa" }, (response) => {
