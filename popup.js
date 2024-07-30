@@ -46,6 +46,10 @@ document.addEventListener("DOMContentLoaded", () => {
         tabs[0].id,
         { action: "customCgpa" },
         (response) => {
+          if (!response) {
+            window.close();
+          }
+
           showResult(response.msg);
         },
       );

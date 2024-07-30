@@ -128,6 +128,10 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
   } else if (request.action == "getCgpa") {
     sendResponse({ msg: calculateCgpa() });
   } else if (request.action == "customCgpa") {
+    if (document.getElementsByTagName("select").length !== 0) {
+      return;
+    }
+
     semesters.forEach((semester) => {
       semester["courses"].forEach((course) => {
         const selectGrade = document.createElement("select");
