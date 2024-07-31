@@ -11,7 +11,7 @@ const grades = {
   "D+": 1.33,
   "D" : 1,
   "F" : 0,
-  // "N/A": "N/A" // FIXME
+  "N/A": "N/A"
 };
 
 const getSemesters = () => {
@@ -34,10 +34,22 @@ const getSemesters = () => {
       tr.innerHTML = `
         <td colspan="8" class="text-right">
           <strong>New GPA: </strong>
-          <span>${semesters[semesterNum]["oldGpa"]}</span>
+          <span>
+            ${
+              isNaN(semesters[semesterNum]["oldGpa"])
+                ? "N/A"
+                : semesters[semesterNum]["oldGpa"]
+            }
+          </span>
           <span class="gpa-improved">+0</span>
           <strong>New CGPA: </strong>
-          <span>${semesters[semesterNum]["oldCgpa"]}</span>
+          <span>
+            ${
+              isNaN(semesters[semesterNum]["oldCgpa"])
+                ? semesters[semesterNum - 1]["oldCgpa"]
+                : semesters[semesterNum]["oldCgpa"]
+            }
+          </span>
           <span class="cgpa-improved">+0</span>
         </td>
       `;
@@ -151,7 +163,10 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
         }
 
         for (let value of Object.values(grades)) {
-          const gradePoint = parseFloat(course.children[6].textContent);
+          const gradePoint =
+            course.children[6].textContent === "N/A"
+              ? "N/A"
+              : parseFloat(course.children[6].textContent);
           const option = document.createElement("option");
           option.innerHTML = value;
           option.value = value;
@@ -174,14 +189,16 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
           const gpa = semesters[semesterNum]["newGpa"];
 
           gradePoint.value = newGradePoints;
-          product.innerHTML = creditHours * newGradePoints;
+          product.innerHTML =
+            newGradePoints === "N/A" ? "N/A" : creditHours * newGradePoints;
           gpa.innerHTML = calculateGpa(semesterNum);
+          gpa.innerHTML = gpa.innerHTML === "NaN" ? "N/A" : gpa.innerHTML;
 
           const newGpa = calculateGpa(semesterNum);
           const increasedGpa = newGpa - semesters[semesterNum]["oldGpa"];
-          semesters[semesterNum]["increasedGpa"].innerHTML = `+${
-            Math.round((increasedGpa + Number.EPSILON) * 100) / 100
-          }`;
+          semesters[semesterNum]["increasedGpa"].innerHTML = isNaN(increasedGpa)
+            ? "+0"
+            : `+${Math.round((increasedGpa + Number.EPSILON) * 100) / 100}`;
 
           const newCgpa = calculateCgpa();
           let increasedCgpa =
@@ -205,9 +222,10 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
           const course = e.target.parentElement.parentElement;
           const creditHours = parseInt(course.children[4].textContent);
           const grade = course.children[5].children[0];
-          const newGradePoints = parseFloat(
-            course.children[6].children[0].value,
-          );
+          const newGradePoints =
+            course.children[6].children[0].value === "N/A"
+              ? "N/A"
+              : parseFloat(course.children[6].children[0].value);
           const newGrade = Object.keys(grades).find(
             (key) => grades[key] === newGradePoints,
           );
@@ -216,14 +234,16 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
           const gpa = semesters[semesterNum]["newGpa"];
 
           grade.value = newGrade;
-          product.innerHTML = creditHours * newGradePoints;
-          gpa.innerHTML = `${calculateGpa(semesterNum)}`;
+          product.innerHTML =
+            newGradePoints === "N/A" ? "N/A" : creditHours * newGradePoints;
+          gpa.innerHTML = calculateGpa(semesterNum);
+          gpa.innerHTML = gpa.innerHTML === "NaN" ? "N/A" : gpa.innerHTML;
 
           const newGpa = calculateGpa(semesterNum);
           const increasedGpa = newGpa - semesters[semesterNum]["oldGpa"];
-          semesters[semesterNum]["increasedGpa"].innerHTML = `+${
-            Math.round((increasedGpa + Number.EPSILON) * 100) / 100
-          }`;
+          semesters[semesterNum]["increasedGpa"].innerHTML = isNaN(increasedGpa)
+            ? "+0"
+            : `+${Math.round((increasedGpa + Number.EPSILON) * 100) / 100}`;
 
           const newCgpa = calculateCgpa();
           let increasedCgpa =
