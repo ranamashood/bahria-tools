@@ -71,11 +71,21 @@ const getSemesters = () => {
   return semesters;
 };
 
+const ignoredCourses = [
+  "Fundamentals of Mathematics - I",
+  "Fundamentals of Mathematics - II",
+];
+
 const calculateGpaHelper = (courses) => {
   let totalCreditHours = 0;
   let totalProduct = 0;
 
   courses.forEach((course) => {
+    const title = course.children[2].textContent;
+    if (ignoredCourses.includes(title)) {
+      return;
+    }
+
     const creditHours = course.children[4].textContent;
     const product = course.children[7].textContent;
 
@@ -100,11 +110,6 @@ const calculateGpa = (semesterNum) => {
 
 const calculateCgpa = () => {
   const getDistinctCourses = () => {
-    const ignoredCourses = [
-      "Fundamentals of Mathematics - I",
-      "Fundamentals of Mathematics - II",
-    ];
-
     const distinctCourses = {};
 
     semesters.forEach((semester) => {
