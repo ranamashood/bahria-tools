@@ -18,7 +18,7 @@ document.addEventListener("DOMContentLoaded", () => {
     let url = tabs[0].url;
 
     if (!url.startsWith("https://cms.bahria.edu.pk")) {
-      showResult("Open <strong>CMS</strong> first");
+      showResult("Open <b>CMS</b> first");
       resultCloseBtn.style.display = "none";
       result.classList.add("result--active");
     }

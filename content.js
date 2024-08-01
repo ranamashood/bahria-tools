@@ -140,7 +140,7 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
 
   if (currentUrl !== examUrl) {
     sendResponse({
-      msg: "Go to <strong>Provisional Result</strong> page first",
+      msg: "Go to <b>Provisional Result</b> page first",
     });
   } else if (request.action == "getCgpa") {
     sendResponse({ msg: calculateCgpa() });
