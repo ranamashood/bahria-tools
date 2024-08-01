@@ -116,8 +116,16 @@ const calculateCgpa = () => {
       semester["courses"].forEach((course) => {
         const title = course.children[2].textContent;
         const product = course.children[7].textContent;
+        const isImproved =
+          distinctCourses[title] &&
+          parseFloat(distinctCourses[title].children[7].textContent) >
+            parseFloat(product);
 
-        if (product !== "N/A" && !ignoredCourses.includes(title)) {
+        if (
+          product !== "N/A" &&
+          !ignoredCourses.includes(title) &&
+          !isImproved
+        ) {
           distinctCourses[title] = course;
         }
       });
