@@ -14,7 +14,8 @@ body {
 }
 
 .menu__btn {
-  background-color: lightblue;
+  background-color: #7a8c74;
+  color: white;
   border-radius: var(--border-radius);
   padding: 10px 0;
   border: none;
@@ -52,7 +53,7 @@ body {
   right: 10px;
   width: 1.3rem;
   height: 1.3rem;
-  background-color: lightblue;
+  background-color: #7a8c74;
   fill: white;
   padding: 4px;
   border-radius: var(--border-radius);
