@@ -140,17 +140,16 @@ const calculateCgpa = () => {
   return cgpa;
 };
 
+const getSessionCookie = () => {
+  const sessionCookie = document.cookie.split("=")[1];
+
+  return sessionCookie;
+};
+
 const semesters = getSemesters();
 
 chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
-  const currentUrl = window.location.href;
-  const examUrl = "https://cms.bahria.edu.pk/Sys/Student/Exams/ExamResult.aspx";
-
-  if (currentUrl !== examUrl) {
-    sendResponse({
-      msg: "Go to <b>Provisional Result</b> page first",
-    });
-  } else if (request.action == "getCgpa") {
+  if (request.action == "getCgpa") {
     sendResponse({ msg: calculateCgpa() });
   } else if (request.action == "customCgpa") {
     if (document.getElementsByTagName("select").length !== 0) {
@@ -282,5 +281,7 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
         course.children[6].appendChild(selectGradePoint);
       });
     });
+  } else if (request.action == "getSessionCookie") {
+    sendResponse({ msg: getSessionCookie() });
   }
 });

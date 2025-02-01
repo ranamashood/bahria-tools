@@ -2,7 +2,7 @@
   "manifest_version": 3,
   "name": "Bahria Tools",
   "description": "Tools used for Bahria University CMS",
-  "version": "0.0.1",
+  "version": "0.1.0",
   "icons": {
     "16": "icons/icon16.png",
     "32": "icons/icon32.png",
@@ -12,10 +12,10 @@
   "action": {
     "default_popup": "popup.html"
   },
-  "permissions": ["activeTab", "tabs", "storage"],
+  "permissions": ["activeTab", "tabs", "storage", "cookies"],
   "content_scripts": [
     {
-      "matches": ["https://cms.bahria.edu.pk/*"],
+      "matches": ["https://cms.bahria.edu.pk/*", "https://lms.bahria.edu.pk/*"],
       "css": ["content.css"],
       "js": ["content.js"]
     }
